@@ -9,7 +9,8 @@ import (
 
 var (
 	// std is the name of the standard logger in stdlib `log`
-	std = New()
+	std        = New()
+	StdDisable = true
 )
 
 func StandardLogger() *Logger {
@@ -18,37 +19,53 @@ func StandardLogger() *Logger {
 
 // SetOutput sets the standard logger output.
 func SetOutput(out io.Writer) {
-	std.SetOutput(out)
+	if StdDisable {
+
+	} else {
+		std.SetOutput(out)
+	}
 }
 
 // SetFormatter sets the standard logger formatter.
 func SetFormatter(formatter Formatter) {
-	std.SetFormatter(formatter)
+	if StdDisable {
+
+	} else {
+		std.SetFormatter(formatter)
+	}
 }
 
 // SetReportCaller sets whether the standard logger will include the calling
 // method as a field.
 func SetReportCaller(include bool) {
-	std.SetReportCaller(include)
+	if StdDisable {
+
+	} else {
+		std.SetReportCaller(include)
+	}
 }
 
 // SetLevel sets the standard logger level.
 func SetLevel(level string) {
-	level = strings.ToUpper(level)
-	switch level {
-	case "FATAL":
-		std.SetLevel(FatalLevel)
-	case "ERROR":
-		std.SetLevel(ErrorLevel)
-	case "WARN":
-		std.SetLevel(WarnLevel)
-	case "INFO":
-		std.SetLevel(InfoLevel)
-	case "DEBUG":
-		std.SetLevel(DebugLevel)
-	case "TRACE":
-		std.SetLevel(TraceLevel)
-	default:
+	if StdDisable {
+
+	} else {
+		level = strings.ToUpper(level)
+		switch level {
+		case "FATAL":
+			std.SetLevel(FatalLevel)
+		case "ERROR":
+			std.SetLevel(ErrorLevel)
+		case "WARN":
+			std.SetLevel(WarnLevel)
+		case "INFO":
+			std.SetLevel(InfoLevel)
+		case "DEBUG":
+			std.SetLevel(DebugLevel)
+		case "TRACE":
+			std.SetLevel(TraceLevel)
+		default:
+		}
 	}
 }
 
@@ -102,47 +119,83 @@ func WithTime(t time.Time) *Entry {
 
 // Tracef logs a message at level Trace on the standard logger.
 func Tracef(format string, args ...interface{}) {
-	std.Tracef(format, args...)
+	if StdDisable {
+
+	} else {
+		std.Tracef(format, args...)
+	}
 }
 
 // Debugf logs a message at level Debug on the standard logger.
 func Debugf(format string, args ...interface{}) {
-	std.Debugf(format, args...)
+	if StdDisable {
+
+	} else {
+		std.Debugf(format, args...)
+	}
 }
 
 // Printf logs a message at level Info on the standard logger.
 func Printf(format string, args ...interface{}) {
-	std.Printf(format, args...)
+	if StdDisable {
+
+	} else {
+		std.Printf(format, args...)
+	}
 }
 
 // Infof logs a message at level Info on the standard logger.
 func Infof(format string, args ...interface{}) {
-	std.Infof(format, args...)
+	if StdDisable {
+
+	} else {
+		std.Infof(format, args...)
+	}
 }
 
 // Warnf logs a message at level Warn on the standard logger.
 func Warnf(format string, args ...interface{}) {
-	std.Warnf(format, args...)
+	if StdDisable {
+
+	} else {
+		std.Warnf(format, args...)
+	}
 }
 
 // Warningf logs a message at level Warn on the standard logger.
 func Warningf(format string, args ...interface{}) {
-	std.Warningf(format, args...)
+	if StdDisable {
+
+	} else {
+		std.Warningf(format, args...)
+	}
 }
 
 // Errorf logs a message at level Error on the standard logger.
 func Errorf(format string, args ...interface{}) {
-	std.Errorf(format, args...)
+	if StdDisable {
+
+	} else {
+		std.Errorf(format, args...)
+	}
 }
 
 // Panicf logs a message at level Panic on the standard logger.
 func Panicf(format string, args ...interface{}) {
-	std.Panicf(format, args...)
+	if StdDisable {
+
+	} else {
+		std.Panicf(format, args...)
+	}
 }
 
 // Fatalf logs a message at level Fatal on the standard logger then the process will exit with status set to 1.
 func Fatalf(format string, args ...interface{}) {
-	std.Fatalf(format, args...)
+	if StdDisable {
+
+	} else {
+		std.Fatalf(format, args...)
+	}
 }
 
 // Print logs a message at level Info on the standard logger.
@@ -152,25 +205,45 @@ func Print(args ...interface{}) {
 
 // Panic logs a message at level Panic on the standard logger.
 func Panic(args ...interface{}) {
-	std.Panic(args...)
+	if StdDisable {
+
+	} else {
+		std.Panic(args...)
+	}
 }
 
 // Fatal logs a message at level Fatal on the standard logger then the process will exit with status set to 1.
 func Fatal(args ...interface{}) {
-	std.Fatal(args...)
+	if StdDisable {
+
+	} else {
+		std.Fatal(args...)
+	}
 }
 
 // Println logs a message at level Info on the standard logger.
 func Println(args ...interface{}) {
-	std.Println(args...)
+	if StdDisable {
+
+	} else {
+		std.Println(args...)
+	}
 }
 
 // Panicln logs a message at level Panic on the standard logger.
 func Panicln(args ...interface{}) {
-	std.Panicln(args...)
+	if StdDisable {
+
+	} else {
+		std.Panicln(args...)
+	}
 }
 
 // Fatalln logs a message at level Fatal on the standard logger then the process will exit with status set to 1.
 func Fatalln(args ...interface{}) {
-	std.Fatalln(args...)
+	if StdDisable {
+
+	} else {
+		std.Fatalln(args...)
+	}
 }

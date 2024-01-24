@@ -18,8 +18,10 @@ package cli
 import (
 	"context"
 	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"fmt"
+	box "github.com/enfein/mieru"
 	"net"
 	"net/http"
 	"os/exec"
@@ -65,6 +67,18 @@ func RegisterClientCommands() {
 			return unexpectedArgsError(s, 2)
 		},
 		clientRunFunc,
+	)
+	RegisterCallback(
+		[]string{"", "runEncrypted"},
+		func(s []string) error {
+			if len(s) < 3 {
+				return fmt.Errorf("usage: runConfig invalid")
+			} else if len(s) > 3 {
+				return fmt.Errorf("usage: runConfig invalid")
+			}
+			return nil
+		},
+		clientRunFuncEncrypted,
 	)
 	RegisterCallback(
 		[]string{"", "stop"},
@@ -321,10 +335,21 @@ var clientStartFunc = func(s []string) error {
 }
 
 var clientRunFunc = func(s []string) error {
+	return HandleRunFunc(s, false)
+}
+var clientRunFuncEncrypted = func(s []string) error {
+	return HandleRunFunc(s, true)
+}
+
+func HandleRunFunc(s []string, encrypted bool) error {
 	log.SetFormatter(&log.DaemonFormatter{})
 	appctl.SetAppStatus(appctlpb.AppStatus_STARTING)
 
-	logFile, err := log.NewClientLogFile()
+	logDir := ""
+	if len(s) == 4 {
+		logDir = s[3]
+	}
+	logFile, err := log.NewClientLogFile(logDir)
 	if err == nil {
 		log.SetOutput(logFile)
 		if err = log.RemoveOldClientLogFiles(); err != nil {
@@ -333,9 +358,22 @@ var clientRunFunc = func(s []string) error {
 	} else {
 		log.Infof("log to stdout due to the following reason: %v", err)
 	}
-
 	// Load and verify client config.
-	config, err := appctl.LoadClientConfig()
+	config, err := &appctlpb.ClientConfig{}, nil
+	if len(s) == 4 {
+		if encrypted {
+			configBytes, err := box.DecryptAES([]byte(s[2]))
+			if err = json.Unmarshal(configBytes, config); err != nil {
+				return fmt.Errorf(stderror.ValidateFullClientConfigFailedErr, err)
+			}
+		} else {
+			if err = json.Unmarshal([]byte(s[2]), config); err != nil {
+				return fmt.Errorf(stderror.ValidateFullClientConfigFailedErr, err)
+			}
+		}
+	} else {
+		config, err = appctl.LoadClientConfig()
+	}
 	if err != nil {
 		if err == stderror.ErrFileNotExist {
 			return fmt.Errorf(stderror.ClientConfigNotExist)

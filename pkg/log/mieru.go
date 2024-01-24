@@ -45,9 +45,13 @@ func init() {
 }
 
 // NewClientLogFile returns a file handler for mieru client to write logs.
-func NewClientLogFile() (io.WriteCloser, error) {
-	if err := prepareClientLogDir(); err != nil {
-		return nil, fmt.Errorf("prepareClientLogDir() failed: %w", err)
+func NewClientLogFile(logDir string) (io.WriteCloser, error) {
+	if logDir == "" {
+		if err := prepareClientLogDir(); err != nil {
+			return nil, fmt.Errorf("prepareClientLogDir() failed: %w", err)
+		}
+	} else {
+		cachedClientLogDir = logDir
 	}
 	t := time.Now()
 	timeStr := fmt.Sprintf("%04d%02d%02d_%02d%02d", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute())
