@@ -32,13 +32,6 @@ jobs:
       - name: Build binaries
         run: make build
 
-      - name: Set Git tag
-        run: git tag -a AES -m "Release AES"
-        shell: bash
-
-      - name: Push Git tag
-        run: git push origin --tags
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -54,6 +47,7 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ github.ref }}
           files: |
             release/*.deb
             release/*.rpm
