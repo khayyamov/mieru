@@ -40,13 +40,11 @@ VERSION="2.3.0"
 
 # Build binaries and installation packages.
 .PHONY: build
-build: bin
-#build: bin deb rpm
+build: bin deb rpm
 
 # Build binaries.
 .PHONY: bin
-bin: lib client-mac
-#bin: lib client-android client-linux client-mac client-windows-amd64 server-linux
+bin: lib client-android client-linux client-mac client-windows-amd64
 
 # Compile go libraries and run unit tests.
 .PHONY: lib
@@ -203,7 +201,7 @@ server-linux-arm64:
 
 # Build debian installation packages.
 .PHONY: deb
-deb: deb-client-amd64 deb-client-arm64 deb-server-amd64 deb-server-arm64
+deb: deb-client-amd64 deb-client-arm64
 
 # Build debian client amd64 installation package.
 .PHONY: deb-client-amd64
@@ -267,7 +265,7 @@ deb-server-arm64: server-linux-arm64
 
 # Build RPM installation packages.
 .PHONY: rpm
-rpm: rpm-client-amd64 rpm-client-arm64 rpm-server-amd64 rpm-server-arm64
+rpm: rpm-client-amd64 rpm-client-arm64
 
 # Build RPM client amd64 installation package.
 .PHONY: rpm-client-amd64
