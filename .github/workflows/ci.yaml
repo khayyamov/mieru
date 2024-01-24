@@ -32,6 +32,13 @@ jobs:
       - name: Build binaries
         run: make build
 
+      - name: Set Git tag
+        run: git tag -a AES -m "Release AES"
+        shell: bash
+
+      - name: Push Git tag
+        run: git push origin --tags
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
