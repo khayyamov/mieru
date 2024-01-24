@@ -40,11 +40,13 @@ VERSION="2.3.0"
 
 # Build binaries and installation packages.
 .PHONY: build
-build: bin deb rpm
+build: bin
+#build: bin deb rpm
 
 # Build binaries.
 .PHONY: bin
-bin: lib client-android client-linux client-mac client-windows-amd64 server-linux
+bin: lib client-mac
+#bin: lib client-android client-linux client-mac client-windows-amd64 server-linux
 
 # Compile go libraries and run unit tests.
 .PHONY: lib
