@@ -17,9 +17,7 @@ ROOT=$(shell git rev-parse --show-toplevel)
 SHORT_SHA=$(shell git rev-parse --short HEAD)
 PROJECT_NAME=$(shell basename "${ROOT}")
 
-ENCRYPT_KEY_MK := $(shell echo $$ENCRYPT_KEY)
-ENCRYPT_KEY_IV_MK := $(shell echo $$ENCRYPT_KEY_IV)
-LDFLAGS = -X github.com/enfein/mieru/constant.ENCRYPT_KEY_IV=$(ENCRYPT_KEY_IV) -X github.com/enfein/mieru/constant.ENCRYPT_KEY=$(ENCRYPT_KEY) -s -w
+LDFLAGS = -s -w
 
 # If this version is changed, also change the version in
 #
