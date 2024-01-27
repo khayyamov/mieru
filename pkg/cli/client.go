@@ -24,9 +24,11 @@ import (
 	box "github.com/enfein/mieru"
 	"net"
 	"net/http"
+	"os"
 	"os/exec"
 	"runtime/pprof"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 
@@ -360,19 +362,23 @@ func HandleRunFunc(s []string, encrypted bool) error {
 	}
 	// Load and verify client config.
 	config, err := &appctlpb.ClientConfig{}, nil
-	if len(s) == 4 {
-		if encrypted {
-			configBytes, err := box.DecryptAES([]byte(s[2]))
-			if err = json.Unmarshal(configBytes, config); err != nil {
+	if encrypted {
+		if strings.HasSuffix(s[2], ".json") {
+			configContent, err := os.ReadFile(s[2])
+			configBytes := box.Decrypt(string(configContent))
+			if err = json.Unmarshal([]byte(configBytes), config); err != nil {
 				return fmt.Errorf(stderror.ValidateFullClientConfigFailedErr, err)
 			}
 		} else {
-			if err = json.Unmarshal([]byte(s[2]), config); err != nil {
+			configBytes := box.Decrypt(s[2])
+			if err = json.Unmarshal([]byte(configBytes), config); err != nil {
 				return fmt.Errorf(stderror.ValidateFullClientConfigFailedErr, err)
 			}
 		}
 	} else {
-		config, err = appctl.LoadClientConfig()
+		if err = json.Unmarshal([]byte(s[2]), config); err != nil {
+			return fmt.Errorf(stderror.ValidateFullClientConfigFailedErr, err)
+		}
 	}
 	if err != nil {
 		if err == stderror.ErrFileNotExist {
