@@ -60,7 +60,7 @@ client-android: client-android-amd64 client-android-arm64
 client-android-amd64:
 	if [ ! -z $$(command -v gcc) ]; then\
 		mkdir -p release/android/amd64;\
-		env GOOS=android GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/android/amd64/mieru_${VERSION}_android_amd64 cmd/mieru/mieru.go;\
+		env GOOS=android GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/android/amd64/mieru_android_amd64 cmd/mieru/mieru.go;\
 
 	fi
 
@@ -69,7 +69,7 @@ client-android-amd64:
 client-android-arm64:
 	if [ ! -z $$(command -v gcc) ]; then\
 		mkdir -p release/android/arm64;\
-		env GOOS=android GOARCH=arm64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/android/arm64/mieru_${VERSION}_android_arm64 cmd/mieru/mieru.go;\
+		env GOOS=android GOARCH=arm64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/android/arm64/mieru_android_arm64 cmd/mieru/mieru.go;\
 
 	fi
 
@@ -81,28 +81,28 @@ client-linux: client-linux-amd64 client-linux-arm64 client-linux-armv7 client-li
 .PHONY: client-linux-amd64
 client-linux-amd64:
 	mkdir -p release/linux/amd64
-	env GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/linux/amd64/mieru_${VERSION}_linux_amd64 cmd/mieru/mieru.go
+	env GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/linux/amd64/mieru_linux_amd64 cmd/mieru/mieru.go
 
 
 # Build linux arm64 client.
 .PHONY: client-linux-arm64
 client-linux-arm64:
 	mkdir -p release/linux/arm64
-	env GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/linux/arm64/mieru_${VERSION}_linux_arm64 cmd/mieru/mieru.go
+	env GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/linux/arm64/mieru_linux_arm64 cmd/mieru/mieru.go
 
 
 # Build linux armv7 client.
 .PHONY: client-linux-armv7
 client-linux-armv7:
 	mkdir -p release/linux/armv7
-	env GOOS=linux GOARCH=arm GOARM=7 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/linux/armv7/mieru_${VERSION}_linux_armv7 cmd/mieru/mieru.go
+	env GOOS=linux GOARCH=arm GOARM=7 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/linux/armv7/mieru_linux_armv7 cmd/mieru/mieru.go
 
 
 # Build linux riscv64 client.
 .PHONY: client-linux-riscv64
 client-linux-riscv64:
 	mkdir -p release/linux/riscv64
-	env GOOS=linux GOARCH=riscv64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/linux/riscv64/mieru_${VERSION}_linux_riscv64 cmd/mieru/mieru.go
+	env GOOS=linux GOARCH=riscv64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/linux/riscv64/mieru_linux_riscv64 cmd/mieru/mieru.go
 
 
 # Build MacOS clients.
@@ -113,19 +113,19 @@ client-mac: client-mac-amd64 client-mac-arm64
 .PHONY: client-mac-amd64
 client-mac-amd64:
 	mkdir -p release/macos/amd64
-	env GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/macos/amd64/mieru_${VERSION}_macos_amd64 cmd/mieru/mieru.go
+	env GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/macos/amd64/mieru_macos_amd64 cmd/mieru/mieru.go
 
 # Build MacOS arm64 client.
 .PHONY: client-mac-arm64
 client-mac-arm64:
 	mkdir -p release/macos/arm64
-	env GOOS=darwin GOARCH=arm64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/macos/arm64/mieru_${VERSION}_macos_arm64 cmd/mieru/mieru.go
+	env GOOS=darwin GOARCH=arm64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/macos/arm64/mieru_macos_arm64 cmd/mieru/mieru.go
 
 # Build windows amd64 client.
 .PHONY: client-windows-amd64
 client-windows-amd64:
 	mkdir -p release/windows
-	env GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/windows/mieru_${VERSION}_windows_amd64.exe cmd/mieru/mieru.go
+	env GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/windows/mieru_windows_amd64.exe cmd/mieru/mieru.go
 
 # Build linux servers.
 .PHONY: server-linux
