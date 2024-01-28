@@ -58,9 +58,9 @@ client-android: client-android-amd64 client-android-arm64
 # Build Android amd64 client.
 .PHONY: client-android-amd64
 client-android-amd64:
-	if [ ! -z $$(command -v gcc) ]; then\
-		mkdir -p release/android/amd64;\
-		env GOOS=android GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/android/amd64/mieru_android_amd64 cmd/mieru/mieru.go;\
+	@if [ ! -z $$(command -v gcc) ]; then \
+		mkdir -p release/android/amd64; \
+		env GOOS=android GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/android/amd64/mieru_android_amd64 cmd/mieru/mieru.go; \
 	fi
 
 # Build Android arm64 client.
