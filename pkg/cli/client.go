@@ -565,6 +565,8 @@ func HandleRunFunc(s []string, encrypted bool) error {
 	metrics.EnableLogging()
 
 	appctl.SetAppStatus(appctlpb.AppStatus_RUNNING)
+
+	fmt.Println("mieru started")
 	wg.Wait()
 
 	// Stop CPU profiling, if previously started.
