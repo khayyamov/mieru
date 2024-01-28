@@ -60,8 +60,7 @@ client-android: client-android-amd64 client-android-arm64
 client-android-amd64:
 	if [ ! -z $$(command -v gcc) ]; then\
 		mkdir -p release/android/amd64;\
-		env GOOS=android GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/android/amd64/mieru_android_amd64 cmd/mieru/mieru.go;\
-
+		env GOOS=android GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/android/amd64/mieru_android_amd64 cmd/mieru/mieru.go;
 	fi
 
 # Build Android arm64 client.
@@ -69,8 +68,7 @@ client-android-amd64:
 client-android-arm64:
 	if [ ! -z $$(command -v gcc) ]; then\
 		mkdir -p release/android/arm64;\
-		env GOOS=android GOARCH=arm64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/android/arm64/mieru_android_arm64 cmd/mieru/mieru.go;\
-
+		env GOOS=android GOARCH=arm64 CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o release/android/arm64/mieru_android_arm64 cmd/mieru/mieru.go
 	fi
 
 # Build linux clients.
