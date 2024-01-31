@@ -70,6 +70,21 @@ client-android-amd64:
 		mv release/android/amd64/mieru_${VERSION}_android_amd64.tar.gz.sha256.txt release/;\
 	fi
 
+# Build Android 386 client.
+.PHONY: client-android-386
+client-android-386:
+	if [ ! -z $$(command -v gcc) ]; then\
+		mkdir -p release/android/386;\
+		env GOOS=android GOARCH=386 CGO_ENABLED=0 go build -ldflags="-s -w" -o release/android/386/mieru cmd/mieru/mieru.go;\
+		cd release/android/386;\
+		sha256sum mieru > mieru_${VERSION}_android_386.sha256.txt;\
+		tar -zcvf mieru_${VERSION}_android_386.tar.gz mieru;\
+		sha256sum mieru_${VERSION}_android_386.tar.gz > mieru_${VERSION}_android_386.tar.gz.sha256.txt;\
+		cd "${ROOT}";\
+		mv release/android/386/mieru_${VERSION}_android_386.tar.gz release/;\
+		mv release/android/386/mieru_${VERSION}_android_386.tar.gz.sha256.txt release/;\
+	fi
+
 # Build Android arm64 client.
 .PHONY: client-android-arm64
 client-android-arm64:
@@ -83,6 +98,21 @@ client-android-arm64:
 		cd "${ROOT}";\
 		mv release/android/arm64/mieru_${VERSION}_android_arm64.tar.gz release/;\
 		mv release/android/arm64/mieru_${VERSION}_android_arm64.tar.gz.sha256.txt release/;\
+	fi
+
+# Build Android arm client.
+.PHONY: client-android-arm
+client-android-arm:
+	if [ ! -z $$(command -v gcc) ]; then\
+		mkdir -p release/android/arm;\
+		env GOOS=android GOARCH=arm CGO_ENABLED=0 go build -ldflags="-s -w" -o release/android/arm/mieru cmd/mieru/mieru.go;\
+		cd release/android/arm;\
+		sha256sum mieru > mieru_${VERSION}_android_arm.sha256.txt;\
+		tar -zcvf mieru_${VERSION}_android_arm.tar.gz mieru;\
+		sha256sum mieru_${VERSION}_android_arm.tar.gz > mieru_${VERSION}_android_arm.tar.gz.sha256.txt;\
+		cd "${ROOT}";\
+		mv release/android/arm/mieru_${VERSION}_android_arm.tar.gz release/;\
+		mv release/android/arm/mieru_${VERSION}_android_arm.tar.gz.sha256.txt release/;\
 	fi
 
 # Build linux clients.
