@@ -53,7 +53,7 @@ lib: fmt
 
 # Build Android clients.
 .PHONY: client-android
-client-android: client-android-amd64 client-android-arm64
+client-android: client-android-amd64 client-android-arm64 client-android-386 client-android-arm
 
 # Build Android amd64 client.
 .PHONY: client-android-amd64
