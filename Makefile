@@ -34,7 +34,7 @@ LDFLAGS = -s -w
 # - pkg/version/current.go
 #
 # Use `tools/bump_version.sh` script to change all those files at one shot.
-VERSION="2.3.0"
+VERSION="2.3.1"
 
 # Build binaries and installation packages.
 .PHONY: build

@@ -62,13 +62,13 @@ const (
 func (ss sessionState) String() string {
 	switch ss {
 	case sessionInit:
-		return "sessionInit"
+		return "INITIALIZED"
 	case sessionAttached:
-		return "sessionAttached"
+		return "ATTACHED"
 	case sessionEstablished:
-		return "sessionEstablished"
+		return "ESTABLISHED"
 	case sessionClosed:
-		return "sessionClosed"
+		return "CLOSED"
 	default:
 		return "UNKNOWN"
 	}
@@ -400,6 +400,28 @@ func (s *Session) SetWriteDeadline(t time.Time) error {
 	return nil
 }
 
+// ToSessionInfo creates related SessionInfo structure.
+func (s *Session) ToSessionInfo() SessionInfo {
+	info := SessionInfo{
+		ID:         fmt.Sprintf("%d", s.id),
+		LocalAddr:  s.LocalAddr().String(),
+		RemoteAddr: s.RemoteAddr().String(),
+		State:      s.state.String(),
+		RecvQBuf:   fmt.Sprintf("%d+%d", s.recvQueue.Len(), s.recvBuf.Len()),
+		SendQBuf:   fmt.Sprintf("%d+%d", s.sendQueue.Len(), s.sendBuf.Len()),
+		LastRecv:   fmt.Sprintf("%v", time.Since(s.lastRXTime).Truncate(time.Second)),
+		LastSend:   fmt.Sprintf("%v", time.Since(s.lastTXTime).Truncate(time.Second)),
+	}
+	if _, ok := s.conn.(*TCPUnderlay); ok {
+		info.Protocol = "TCP"
+	} else if _, ok := s.conn.(*UDPUnderlay); ok {
+		info.Protocol = "UDP"
+	} else {
+		info.Protocol = "UNKNOWN"
+	}
+	return info
+}
+
 func (s *Session) isState(target sessionState) bool {
 	s.sLock.Lock()
 	defer s.sLock.Unlock()
@@ -549,15 +571,17 @@ func (s *Session) runOutputLoop(ctx context.Context) error {
 				}
 			}
 		case util.UDPTransport:
+			closeSession := false
 			hasTimeout := false
 
 			// Resend segments in sendBuf.
+			// To avoid deadlock, session can't be closed inside Ascend().
 			s.sendBuf.Ascend(func(iter *segment) bool {
 				if iter.txCount >= txCountLimit {
 					err := fmt.Errorf("too many retransmission of %v", iter)
 					log.Debugf("%v is unhealthy: %v", s, err)
 					s.outputErr <- err
-					s.Close()
+					closeSession = true
 					return false
 				}
 				if time.Since(iter.txTime) > iter.txTimeout {
@@ -573,13 +597,16 @@ func (s *Session) runOutputLoop(ctx context.Context) error {
 						err = fmt.Errorf("output() failed: %w", err)
 						log.Debugf("%v %v", s, err)
 						s.outputErr <- err
-						s.Close()
+						closeSession = true
 						return false
 					}
 					return true
 				}
 				return true
 			})
+			if closeSession {
+				s.Close()
+			}
 			if hasTimeout {
 				s.sendAlgorithm.OnTimeout()
 			}
@@ -913,4 +940,17 @@ func (s *Session) checkQuota(userName string) (ok bool, err error) {
 		}
 	}
 	return true, nil
+}
+
+// SessionInfo provides a string representation of a Session.
+type SessionInfo struct {
+	ID         string
+	Protocol   string
+	LocalAddr  string
+	RemoteAddr string
+	State      string
+	RecvQBuf   string
+	SendQBuf   string
+	LastRecv   string
+	LastSend   string
 }
