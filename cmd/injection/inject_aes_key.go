@@ -9,12 +9,11 @@ import (
 func main() {
 	aesKey := os.Getenv("ENCRYPT_KEY")
 	if aesKey == "" {
-		fmt.Println("Error: AES_KEY environment variable not set.")
+		fmt.Println("Error: ENCRYPT_KEY environment variable not set.")
 		return
 	}
 
-	content := fmt.Sprintf(`
-package constant
+	content := fmt.Sprintf(`package constant
 
 var (
 	ENCRYPTED_CONFIG = true

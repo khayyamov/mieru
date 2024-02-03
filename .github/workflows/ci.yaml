@@ -26,9 +26,7 @@ jobs:
 
 
       - name: Inject AES keys
-        run: go run ./cmd/injection/inject_aes_key.go
-        env:
-          AES_KEY: ${{ secrets.ENCRYPT_KEY }}
+        run: env ENCRYPT_KEY=${{ secrets.ENCRYPT_KEY }} go run ./cmd/injection/inject_aes_key.go
 
       - name: Run go vet
         run: make vet
