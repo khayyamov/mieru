@@ -7,9 +7,9 @@ import (
 )
 
 func main() {
-	aesKey := os.Getenv("ENCRYPT_KEY")
+	aesKey := os.Getenv("AES_KEY")
 	if aesKey == "" {
-		fmt.Println("Error: ENCRYPT_KEY environment variable not set.")
+		fmt.Println("Error: AES_KEY environment variable not set.")
 		return
 	}
 
