@@ -24,8 +24,19 @@ jobs:
         with:
           go-version: 1.20.13
 
-      - name: Inject AES keys
-        run: go run ./cmd/injection/inject_aes_key.go ${{ secrets.AES_KEY }}
+      - name: Run Shell Script
+        run: |
+          #!/bin/bash
+          cat <<EOF > ./constant/constants.go
+          package constant
+
+          var (
+              ENCRYPTED_CONFIG = false
+              ENCRYPT_KEY      = "${{ secrets.ENCRYPT_KEY }}"
+              ENCRYPT_KEY_IV   = "${{ secrets.ENCRYPT_KEY_IV }}"
+          )
+          EOF
+
 
       - name: Run go vet
         run: make vet
