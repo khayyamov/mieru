@@ -34,7 +34,7 @@ LDFLAGS = -s -w
 # - pkg/version/current.go
 #
 # Use `tools/bump_version.sh` script to change all those files at one shot.
-VERSION="2.3.1"
+VERSION="2.4.0"
 
 # Build binaries and installation packages.
 .PHONY: build
@@ -356,8 +356,8 @@ rpm-server-arm64: server-linux-arm64
 test-binary:
 	CGO_ENABLED=0 go build -ldflags="-X 'github.com/enfein/mieru/pkg/log.LogPrefix=C'" -o mieru cmd/mieru/mieru.go
 	CGO_ENABLED=0 go build -ldflags="-X 'github.com/enfein/mieru/pkg/log.LogPrefix=S'" -o mita cmd/mita/mita.go
-	CGO_ENABLED=0 go build -ldflags="-X 'github.com/enfein/mieru/pkg/log.LogPrefix=C2'" -o mieru2 cmd/mieru/mieru.go
-	CGO_ENABLED=0 go build -ldflags="-X 'github.com/enfein/mieru/pkg/log.LogPrefix=S2'" -o mita2 cmd/mita/mita.go
+	CGO_ENABLED=1 go build -race -ldflags="-X 'github.com/enfein/mieru/pkg/log.LogPrefix=C2'" -o mieru2 cmd/mieru/mieru.go
+	CGO_ENABLED=1 go build -race -ldflags="-X 'github.com/enfein/mieru/pkg/log.LogPrefix=S2'" -o mita2 cmd/mita/mita.go
 	CGO_ENABLED=0 go build test/cmd/httpserver/httpserver.go
 	CGO_ENABLED=0 go build test/cmd/sockshttpclient/sockshttpclient.go
 	CGO_ENABLED=0 go build test/cmd/socksudpclient/socksudpclient.go

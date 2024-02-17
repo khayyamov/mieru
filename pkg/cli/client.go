@@ -493,7 +493,7 @@ func HandleRunFunc(s []string, encrypted bool) error {
 			proxyHost = serverInfo.GetIpAddress()
 			proxyIP = net.ParseIP(proxyHost)
 			if proxyIP == nil {
-				return fmt.Errorf(stderror.ParseIPFailedErr, err)
+				return fmt.Errorf(stderror.ParseIPFailed)
 			}
 		}
 		ipVersion := util.GetIPVersion(proxyIP.String())
@@ -522,6 +522,7 @@ func HandleRunFunc(s []string, encrypted bool) error {
 		UseProxy:                 true,
 		ClientSideAuthentication: true,
 		ProxyMux:                 mux,
+		HandshakeTimeout:         10 * time.Second,
 	}
 	socks5Server, err := socks5.New(socks5Config)
 	if err != nil {
