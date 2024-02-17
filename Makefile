@@ -60,7 +60,7 @@ client-android: client-android-amd64 client-android-arm64 client-android-386 cli
 client-android-amd64:
 	if [ ! -z $$(command -v gcc) ]; then\
 		mkdir -p release/android/amd64;\
-		env GOOS=android GOARCH=amd64 CGO_ENABLED=1 go build -ldflags="-s -w" -o release/android/amd64/mieru cmd/mieru/mieru.go;\
+		env GOOS=android GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-s -w" -o release/android/amd64/mieru cmd/mieru/mieru.go;\
 		cd release/android/amd64;\
 		sha256sum mieru > mieru_${VERSION}_android_amd64.sha256.txt;\
 		tar -zcvf mieru_${VERSION}_android_amd64.tar.gz mieru;\
@@ -75,7 +75,7 @@ client-android-amd64:
 client-android-386:
 	if [ ! -z $$(command -v gcc) ]; then\
 		mkdir -p release/android/386;\
-		env GOOS=android GOARCH=386 CGO_ENABLED=1 go build -ldflags="-s -w" -o release/android/386/mieru cmd/mieru/mieru.go;\
+		env GOOS=android GOARCH=386 CGO_ENABLED=0 go build -ldflags="-s -w" -o release/android/386/mieru cmd/mieru/mieru.go;\
 		cd release/android/386;\
 		sha256sum mieru > mieru_${VERSION}_android_386.sha256.txt;\
 		tar -zcvf mieru_${VERSION}_android_386.tar.gz mieru;\
@@ -90,7 +90,7 @@ client-android-386:
 client-android-arm64:
 	if [ ! -z $$(command -v gcc) ]; then\
 		mkdir -p release/android/arm64;\
-		env GOOS=android GOARCH=arm64 CGO_ENABLED=1 go build -ldflags="-s -w" -o release/android/arm64/mieru cmd/mieru/mieru.go;\
+		env GOOS=android GOARCH=arm64 CGO_ENABLED=0 go build -ldflags="-s -w" -o release/android/arm64/mieru cmd/mieru/mieru.go;\
 		cd release/android/arm64;\
 		sha256sum mieru > mieru_${VERSION}_android_arm64.sha256.txt;\
 		tar -zcvf mieru_${VERSION}_android_arm64.tar.gz mieru;\
@@ -105,7 +105,7 @@ client-android-arm64:
 client-android-arm:
 	if [ ! -z $$(command -v gcc) ]; then\
 		mkdir -p release/android/arm;\
-		env GOOS=android GOARCH=arm CGO_ENABLED=1 go build -ldflags="-s -w" -o release/android/arm/mieru cmd/mieru/mieru.go;\
+		env GOOS=android GOARCH=arm CGO_ENABLED=0 go build -ldflags="-s -w" -o release/android/arm/mieru cmd/mieru/mieru.go;\
 		cd release/android/arm;\
 		sha256sum mieru > mieru_${VERSION}_android_arm.sha256.txt;\
 		tar -zcvf mieru_${VERSION}_android_arm.tar.gz mieru;\
